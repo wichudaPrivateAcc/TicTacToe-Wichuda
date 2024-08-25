@@ -1,6 +1,6 @@
 import axios from "axios"
 import { refreshAccessToken } from "./users"
-import { getAccessToken } from "../utils/tokenHelpers"
+import { clearAllToken, getAccessToken } from "../utils/tokenHelpers"
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -23,17 +23,20 @@ axiosInstance.interceptors.request.use(
 )
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    return response
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config
+    console.log("Error response:", error.response)
+    console.log("Original Request:", originalRequest)
 
     if (
+      error.response &&
       (error.response.status === 401 || error.response.status === 403) &&
       !originalRequest._retry
     ) {
+      console.log("Attempting to refresh token...")
       originalRequest._retry = true
+
       try {
         const newAccessToken = await refreshAccessToken()
 

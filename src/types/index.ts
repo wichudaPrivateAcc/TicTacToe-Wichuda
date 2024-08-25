@@ -15,5 +15,4 @@ interface UserContextType {
   userProfile: any
   setUserProfile: React.Dispatch<React.SetStateAction<any>>
   logout: () => void
-  login: (res: any) => void
 }

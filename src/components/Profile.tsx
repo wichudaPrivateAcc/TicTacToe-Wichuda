@@ -38,9 +38,8 @@ export default function Profile() {
 
   return (
     <Grid container flexDirection={"column"} gap={2}>
-      {userProfile ? (
+      {userProfile && (
         <>
-          {/* {JSON.stringify(userData)} */}
           <Typography textAlign="center" variant="h1">
             {userProfile.name}
           </Typography>
@@ -140,10 +139,6 @@ export default function Profile() {
             </Grid>
           </Grid>
         </>
-      ) : (
-        <Typography variant="h6" textAlign={"center"}>
-          No profile information available
-        </Typography>
       )}
     </Grid>
   )

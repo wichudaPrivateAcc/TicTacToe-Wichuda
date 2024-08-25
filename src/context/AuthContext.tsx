@@ -1,11 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react"
-import { addUser } from "../api/users"
-import {
-  clearAllToken,
-  setAccessToken,
-  setRefreshToken,
-  setUserProfileLocal,
-} from "../utils/tokenHelpers"
+import { clearAllToken, setUserProfileLocal } from "../utils/tokenHelpers"
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
@@ -16,27 +10,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     const storedProfile = localStorage.getItem("userProfile")
     return storedProfile ? JSON.parse(storedProfile) : null
   })
-
-  const login = async (res: any) => {
-    try {
-      const payload = {
-        googleid: res.googleId,
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-      }
-      const response = await addUser(payload)
-      if (response.data.exists) {
-        console.log("User already exists.")
-      } else {
-        console.log("New user created.")
-      }
-      setAccessToken(response.data.accessToken)
-      setRefreshToken(response.data.refreshToken)
-      setUserProfile(res.profileObj)
-    } catch (error) {
-      console.error("Error adding or checking user:", error)
-    }
-  }
 
   const logout = () => {
     setUserProfile(null)
@@ -50,9 +23,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [userProfile])
 
   return (
-    <UserContext.Provider
-      value={{ userProfile, setUserProfile, logout, login  }}
-    >
+    <UserContext.Provider value={{ userProfile, setUserProfile, logout }}>
       {children}
     </UserContext.Provider>
   )

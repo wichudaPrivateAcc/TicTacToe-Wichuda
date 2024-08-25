@@ -3,6 +3,7 @@ import Layout from "../layout/Layout"
 import Login from "../Login"
 import Profile from "../Profile"
 import Game from "../homepage/Game"
+import ProtectedRoute from "../ProtectedRoute"
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -16,12 +17,20 @@ export default function Router() {
       children: [
         {
           path: "",
-          element: <Game />,
+          element: (
+            <ProtectedRoute>
+              <Game />
+            </ProtectedRoute>
+          ),
           index: true,
         },
         {
           path: "profile",
-          element: <Profile />,
+          element: (
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          ),
         },
       ],
     },

@@ -1,15 +1,17 @@
 import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { Button, Container, Typography } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import { gapi } from "gapi-script"
 import GoogleLogin from "react-google-login"
 import { useUser } from "../context/AuthContext"
 import GoogleIcon from "@mui/icons-material/Google"
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded"
 import LoginContainer from "./LoginContainer"
+import { addUser } from "../api/users"
+import { setAccessToken, setRefreshToken } from "../utils/tokenHelpers"
 
 export default function Login() {
-  const { setUserProfile, userProfile, login } = useUser()
+  const { setUserProfile, userProfile } = useUser()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -25,9 +27,25 @@ export default function Login() {
 
   const onSuccess = async (res: any) => {
     console.log("success:", res)
-    login(res)
-    setUserProfile(res.profileObj)
-    navigate("/")
+    try {
+      const payload = {
+        googleid: res.googleId,
+        name: res.profileObj.name,
+        email: res.profileObj.email,
+      }
+      const response = await addUser(payload)
+      if (response.data.exists) {
+        console.log("User already exists.")
+      } else {
+        console.log("New user created.")
+      }
+      setAccessToken(response.data.accessToken)
+      setRefreshToken(response.data.refreshToken)
+      setUserProfile(res.profileObj)
+      navigate("/")
+    } catch (error) {
+      console.error("Error adding or checking user:", error)
+    }
   }
 
   return (
