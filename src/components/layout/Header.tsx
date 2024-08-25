@@ -63,7 +63,16 @@ export default function Header() {
                 clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}
                 buttonText="Log Out"
                 onLogoutSuccess={handleLogout}
-                style={{ backgroundColor: "pink", borderRadius: 10 }}
+                render={(renderProps) => (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={renderProps.onClick}
+                    sx={{ py: 1, px: 3, borderRadius: 50 }}
+                  >
+                    Logout
+                  </Button>
+                )}
               />
             </Stack>
           ) : (
