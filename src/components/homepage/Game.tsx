@@ -94,7 +94,11 @@ export default function Game() {
     <Button
       fullWidth
       variant={board[index] ? "contained" : "outlined"}
-      sx={{ fontSize: 100, height: 180, borderRadius: 8 }}
+      sx={{
+        fontSize: { xs: 80, sm: 100 },
+        height: { xs: 100, sm: 180 },
+        borderRadius: { xs: 4, sm: 8 },
+      }}
       onClick={() => handleClick(index)}
     >
       {board[index]}

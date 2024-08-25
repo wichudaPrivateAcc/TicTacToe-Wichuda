@@ -26,12 +26,13 @@ export default function Header() {
         <Grid
           container
           display={"flex"}
-          justifyContent={"space-between"}
+          justifyContent={{ xs: "center", sm: "space-between" }}
           alignItems={"center"}
+          py={{ xs: 2, sm: 0 }}
         >
           <Typography
             variant="h1"
-            color="secondary.main"
+            color="info.light"
             sx={{ cursor: "pointer" }}
             onClick={() => navigate("/")}
           >

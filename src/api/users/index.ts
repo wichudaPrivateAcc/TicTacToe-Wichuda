@@ -1,19 +1,10 @@
 import { axiosInstance } from ".."
+import {
+  getRefreshToken,
+  setAccessToken,
+  setRefreshToken,
+} from "../../utils/tokenHelpers"
 
-type UpdatePayload = {
-  googleid: string
-  newScore: number
-  consecutiveWins: number
-  gameHistoryLog: { date: any; isWin: boolean }[]
-}
-
-type AddUserPayload = {
-  googleid: string
-  name: string
-  email: string
-}
-
-// ฟังก์ชันสำหรับดึงข้อมูลผู้ใช้
 export const getUserData = async (googleid: string) => {
   try {
     const response = await axiosInstance.get(`users/${googleid}`)
@@ -23,7 +14,6 @@ export const getUserData = async (googleid: string) => {
   }
 }
 
-// ฟังก์ชันสำหรับอัปเดตคะแนน
 export const updateUserScore = async (payload: UpdatePayload) => {
   try {
     const res = await axiosInstance.put(`users/${payload.googleid}`, {
@@ -37,9 +27,7 @@ export const updateUserScore = async (payload: UpdatePayload) => {
   }
 }
 
-// เพิ่มผู้ใช้ใหม่
 export const addUser = async (payload: AddUserPayload) => {
-  console.log(payload)
   try {
     const res = await axiosInstance.post(`users/${payload.googleid}`, {
       googleid: payload.googleid,
@@ -49,5 +37,32 @@ export const addUser = async (payload: AddUserPayload) => {
     return res
   } catch (error) {
     console.error("Error updating user", error)
+  }
+}
+
+export const refreshAccessToken = async () => {
+  const refreshToken = getRefreshToken()
+  if (!refreshToken) {
+    console.error("No refresh token available")
+    return null
+  }
+
+  try {
+    const response = await axiosInstance.post("users/refresh-token", {
+      refreshToken,
+    })
+
+    const { accessToken, refreshToken: newRefreshToken } = response.data
+    setAccessToken(accessToken)
+    setRefreshToken(newRefreshToken)
+
+    axiosInstance.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${accessToken}`
+
+    return accessToken
+  } catch (error) {
+    console.error("Failed to refresh token", error)
+    return null
   }
 }

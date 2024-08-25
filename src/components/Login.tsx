@@ -1,14 +1,16 @@
 import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { Container, Typography } from "@mui/material"
+import { Button, Container, Typography } from "@mui/material"
 import { gapi } from "gapi-script"
 import GoogleLogin from "react-google-login"
 import { useUser } from "../context/AuthContext"
-import { addUser } from "../api/users"
+import GoogleIcon from "@mui/icons-material/Google"
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded"
+import LoginContainer from "./LoginContainer"
 
 export default function Login() {
+  const { setUserProfile, userProfile, login } = useUser()
   const navigate = useNavigate()
-  const { setUserProfile, userProfile } = useUser()
 
   useEffect(() => {
     const initClient = () => {
@@ -23,54 +25,41 @@ export default function Login() {
 
   const onSuccess = async (res: any) => {
     console.log("success:", res)
+    login(res)
     setUserProfile(res.profileObj)
-
-    try {
-      const payload = {
-        googleid: res.profileObj.googleId,
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-      }
-      const response = await addUser(payload)
-      if (response.data.exists) {
-        console.log("User already exists.")
-      } else {
-        console.log("New user created.")
-      }
-
-      navigate("/")
-    } catch (error) {
-      console.error("Error adding or checking user:", error)
-    }
-  }
-
-  const onError = (res: any) => {
-    console.log("failed:", res)
+    navigate("/")
   }
 
   return (
-    <Container
-      maxWidth="xl"
-      sx={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: 5,
-      }}
-    >
-      <Typography variant="h1" color={"primary"}>
+    <LoginContainer>
+      <Typography variant="h1" color={"primary"} textAlign={"center"}>
         Welcome To TicTacToe!
       </Typography>
       <GoogleLogin
         clientId={import.meta.env.VITE_APP_GOOGLE_CLIENT_ID}
         buttonText="Login With Google Account"
         onSuccess={onSuccess}
-        onFailure={onError}
+        onFailure={() => {
+          console.log("Login Failed")
+        }}
         cookiePolicy="single_host_origin"
         isSignedIn={true}
+        render={(renderProps) => (
+          <Button
+            variant="contained"
+            onClick={renderProps.onClick}
+            disabled={renderProps.disabled}
+            startIcon={<GoogleIcon />}
+            endIcon={<LogoutRoundedIcon />}
+            sx={{ py: 1, px: 3, borderRadius: 50 }}
+          >
+            Login With Google Account
+          </Button>
+        )}
       />
-    </Container>
+      <Typography color={"primary.main"} textAlign={"center"}>
+        Please Login In With Your Google Account To Start The Game.
+      </Typography>
+    </LoginContainer>
   )
 }

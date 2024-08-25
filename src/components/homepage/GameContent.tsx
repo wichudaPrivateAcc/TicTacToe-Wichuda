@@ -10,11 +10,16 @@ export default function GameContent({
   children: any
 }) {
   return (
-    <Grid container>
+    <Grid
+      container
+      display={"flex"}
+      justifyContent={"center"}
+      flexDirection={"row"}
+    >
       <Grid
         item
-        flex={1}
-        display={"flex"}
+        xs={3}
+        display={{ xs: "none", sm: "none", md: "none", lg: "flex" }}
         alignItems={"center"}
         justifyContent={"center"}
         flexDirection={"column"}
@@ -27,13 +32,14 @@ export default function GameContent({
           }}
         />
       </Grid>
-      <Grid item xs={6} px={4}>
+      <Grid item xs={12} sm={10} md={8} lg={6} px={{ xs: 0, lg: 4 }}>
         {children}
       </Grid>
       <Grid
         item
+        xs={3}
         flex={1}
-        display={"flex"}
+        display={{ xs: "none", sm: "none", md: "none", lg: "flex" }}
         alignItems={"center"}
         justifyContent={"center"}
       >
