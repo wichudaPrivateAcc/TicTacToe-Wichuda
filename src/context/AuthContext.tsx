@@ -25,13 +25,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         email: res.profileObj.email,
       }
       const response = await addUser(payload)
-      if (response.data.exists) {
+      if (response?.data.exists) {
         console.log("User already exists.")
       } else {
         console.log("New user created.")
       }
-      setAccessToken(response.data.accessToken)
-      setRefreshToken(response.data.refreshToken)
+      setAccessToken(response?.data.accessToken)
+      setRefreshToken(response?.data.refreshToken)
       setUserProfile(res.profileObj)
     } catch (error) {
       console.error("Error adding or checking user:", error)

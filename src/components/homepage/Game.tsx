@@ -47,7 +47,7 @@ export default function Game() {
     }
   }
 
-  const [userScore, setUserScore] = useState<UserData>(null)
+  const [userScore, setUserScore] = useState<UserData | null>(null)
 
   const isBoardFull = (board: string[]) => board.every((cell) => cell !== null)
 
