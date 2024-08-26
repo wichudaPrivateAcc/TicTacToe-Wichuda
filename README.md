@@ -14,7 +14,7 @@
 
    เปิด terminal หรือ command prompt แล้วรันคำสั่งด้านล่างเพื่อ clone โปรเจคลงในเครื่องของคุณ:
    
-   git clone https://github.com/wichudaPrivateAcc/TicTacToe-Wichuda.git --> branch master
+   git clone https://github.com/wichudaPrivateAcc/TicTacToe-Wichuda.git
    
 3. **ใช้คำสั่ง cd [ชื่อโปรเจค]:**
 
