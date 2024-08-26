@@ -37,7 +37,7 @@ export default function Profile() {
   }, [])
 
   return (
-    <Grid container flexDirection={"column"} gap={2}>
+    <Grid container flexDirection={"column"} gap={2} mt={1}>
       {userProfile && (
         <>
           <Typography textAlign="center" variant="h1">
@@ -102,8 +102,15 @@ export default function Profile() {
                   }
                 </Typography>
               </Stack>
-              <Box sx={{ p: 2, borderRadius: 4, bgcolor: "background.paper" }}>
-                <Typography variant="h6">Game History</Typography>
+              <Typography variant="h6" mt={2}>
+                Game History
+              </Typography>
+              <Box
+                sx={{
+                  maxHeight: 400,
+                  overflowY: "auto",
+                }}
+              >
                 {userData?.gameHistoryLog?.length > 0 ? (
                   <List>
                     {userData.gameHistoryLog.map((log: any, index: number) => (

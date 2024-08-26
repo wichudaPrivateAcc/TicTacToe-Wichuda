@@ -6,12 +6,12 @@ import { useNavigate } from "react-router-dom"
 export default function GameFooter({ onReset }: { onReset: Function }) {
   const navigate = useNavigate()
   return (
-    <Grid container justifyContent={"space-between"}>
+    <Grid container justifyContent={"space-between"} mt={2}>
       <Button
         variant="contained"
         color="primary"
         onClick={() => onReset()}
-        sx={{ marginTop: 5, borderRadius: 5 }}
+        sx={{ borderRadius: 5 }}
         startIcon={<SyncRoundedIcon />}
       >
         Restart Game
@@ -20,7 +20,7 @@ export default function GameFooter({ onReset }: { onReset: Function }) {
         variant="contained"
         color="primary"
         onClick={() => navigate("/profile")}
-        sx={{ marginTop: 5, borderRadius: 5 }}
+        sx={{ borderRadius: 5 }}
         startIcon={<HistoryToggleOffRoundedIcon />}
       >
         View History

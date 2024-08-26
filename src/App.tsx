@@ -4,14 +4,17 @@ import CssBaseline from "@mui/material/CssBaseline"
 import theme from "./theme"
 import { ThemeProvider } from "@mui/material"
 import { UserProvider } from "./context/AuthContext"
+import { AlertProvider } from "./context/AlertContext"
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <UserProvider>
-        <Router />
-      </UserProvider>
+      <AlertProvider>
+        <CssBaseline />
+        <UserProvider>
+          <Router />
+        </UserProvider>
+      </AlertProvider>
     </ThemeProvider>
   )
 }

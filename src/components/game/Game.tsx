@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material"
+import { Box } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { calculateWinner } from "../../utils/calculateWinner"
 import { useUser } from "../../context/AuthContext"
@@ -7,15 +7,10 @@ import dayjs from "dayjs"
 import GameHeader from "./GameHeader"
 import GameContent from "./GameContent"
 import GameFooter from "./GameFooter"
+import { useAlert } from "../../context/AlertContext"
+import GameBox from "./GameBox"
 
 const initialBoard = Array(9).fill(null)
-
-type UserData = {
-  consecutiveWins: number
-  score: number
-  email: string
-  googleid: string
-}
 
 export default function Game() {
   const { userProfile } = useUser()
@@ -23,6 +18,10 @@ export default function Game() {
   const [board, setBoard] = useState<string[]>(initialBoard)
   const [isXNext, setIsXNext] = useState<boolean>(true)
   const [winner, setWinner] = useState<string | null>(null)
+
+  const [userScore, setUserScore] = useState<UserData | null>(null)
+  const isBoardFull = (board: string[]) => board.every((cell) => cell !== null)
+  const { handleOpen } = useAlert()
 
   const updateScoreFromApi = async (
     scoreUpdate: number,
@@ -40,16 +39,11 @@ export default function Game() {
         consecutiveWins: newConsecutiveWins,
         gameHistoryLog: [gameLog],
       }
-      const res = await updateUserScore(payload)
-      console.log(res)
+      await updateUserScore(payload)
     } catch (error) {
       console.log("Error:", error)
     }
   }
-
-  const [userScore, setUserScore] = useState<UserData | null>(null)
-
-  const isBoardFull = (board: string[]) => board.every((cell) => cell !== null)
 
   const handleClick = (index: number) => {
     if (board[index] || winner) return
@@ -75,35 +69,20 @@ export default function Game() {
       newConsecutiveWins += 1
 
       if (newConsecutiveWins >= 3) {
-        newScore += 1 // เพิ่มคะแนนพิเศษ
-        newConsecutiveWins = 0 // รีเซ็ต consecutiveWins
+        newScore += 1
+        newConsecutiveWins = 0
       }
     } else {
       newScore -= 1
-      newConsecutiveWins = 0 // รีเซ็ต consecutiveWins
+      newConsecutiveWins = 0
     }
-    // เรียกใช้ API เพื่ออัปเดตคะแนน
+
     await updateScoreFromApi(
       newScore,
       newConsecutiveWins,
       winner === "X" ? true : false,
     )
   }
-
-  const renderSquare = (index: number) => (
-    <Button
-      fullWidth
-      variant={board[index] ? "contained" : "outlined"}
-      sx={{
-        fontSize: { xs: 80, sm: 100 },
-        height: { xs: 100, sm: 180 },
-        borderRadius: { xs: 4, sm: 8 },
-      }}
-      onClick={() => handleClick(index)}
-    >
-      {board[index]}
-    </Button>
-  )
 
   const botMove = () => {
     const availableMoves = board
@@ -142,21 +121,6 @@ export default function Game() {
     }
   }, [board, isXNext, winner])
 
-  useEffect(() => {
-    if (winner) {
-      const timer = setTimeout(() => {
-        handleRestart()
-        getUserScore()
-      }, 1000)
-      return () => clearTimeout(timer)
-    } else if (isBoardFull(board)) {
-      const timer = setTimeout(() => {
-        handleRestart()
-      }, 1000)
-      return () => clearTimeout(timer)
-    }
-  }, [winner, board])
-
   const getUserScore = async () => {
     try {
       const res = await getUserData(userProfile.googleId)
@@ -170,13 +134,26 @@ export default function Game() {
     getUserScore()
   }, [])
 
-  if (!userProfile) {
-    return (
-      <Typography variant="h4" textAlign={"center"}>
-        Please Login To Start The Game.
-      </Typography>
-    )
-  }
+  useEffect(() => {
+    if (winner || isBoardFull(board)) {
+      handleOpen({
+        open: true,
+        title: winner
+          ? winner === "X"
+            ? "Congratulation! You are the winner."
+            : "Sorry, You Lost.."
+          : "The Board Is Full.",
+        isWinner: winner === "X",
+      })
+
+      const timer = setTimeout(() => {
+        handleRestart()
+        if (winner) getUserScore()
+      }, 1000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [winner, board])
 
   return (
     <Box textAlign={"center"}>
@@ -187,56 +164,7 @@ export default function Game() {
         winner={winner}
       />
       <GameContent isXNext={isXNext}>
-        <Grid container justifyContent="center">
-          {[0, 1, 2].map((index) => (
-            <Grid
-              item
-              key={index}
-              xs={4}
-              p={2}
-              sx={{
-                borderRight: index !== 2 ? "2px solid" : "none",
-                borderBottom: "2px solid",
-                borderColor: "primary.main",
-              }}
-            >
-              {renderSquare(index)}
-            </Grid>
-          ))}
-        </Grid>
-        <Grid container justifyContent="center">
-          {[3, 4, 5].map((index) => (
-            <Grid
-              item
-              key={index}
-              xs={4}
-              p={2}
-              sx={{
-                borderRight: index !== 5 ? "2px solid" : "none",
-                borderBottom: "2px solid",
-                borderColor: "primary.main",
-              }}
-            >
-              {renderSquare(index)}
-            </Grid>
-          ))}
-        </Grid>
-        <Grid container justifyContent="center">
-          {[6, 7, 8].map((index) => (
-            <Grid
-              item
-              key={index}
-              xs={4}
-              p={2}
-              sx={{
-                borderRight: index !== 8 ? "2px solid" : "none",
-                borderColor: "primary.main",
-              }}
-            >
-              {renderSquare(index)}
-            </Grid>
-          ))}
-        </Grid>
+        <GameBox board={board} handleClick={handleClick} />
         <GameFooter onReset={handleRestart} />
       </GameContent>
     </Box>

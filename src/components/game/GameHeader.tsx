@@ -10,7 +10,13 @@ interface Props {
 export default function GameHeader(props: Props) {
   const { score, consecutiveWin, isXNext, winner } = props
   return (
-    <Grid container py={2} flexDirection={{ xs: "column", sm: "row" }}>
+    <Grid
+      container
+      py={2}
+      flexDirection={{ xs: "column", sm: "row" }}
+      display={"flex"}
+      alignItems={"center"}
+    >
       <Grid item xs={12} sm={3} order={{ xs: 2, sm: 1 }}>
         <Typography variant="h6">Total Scores: {score}</Typography>
       </Grid>

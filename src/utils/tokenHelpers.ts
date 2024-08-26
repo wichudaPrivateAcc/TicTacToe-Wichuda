@@ -1,5 +1,6 @@
 export const getAccessToken = () => localStorage.getItem("accessToken")
 export const getRefreshToken = () => localStorage.getItem("refreshToken")
+export const getUserProfile = () => localStorage.getItem("userProfile")
 
 export const removeAccessToken = () => localStorage.removeItem("accessToken")
 export const removeRefreshToken = () => localStorage.removeItem("refreshToken")

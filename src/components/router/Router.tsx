@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Layout from "../layout/Layout"
-import Login from "../Login"
+import Login from "../login/Login"
 import Profile from "../Profile"
-import Game from "../homepage/Game"
+import Game from "../game/Game"
 import ProtectedRoute from "../ProtectedRoute"
 
 export default function Router() {

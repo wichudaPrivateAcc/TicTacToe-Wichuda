@@ -40,10 +40,13 @@ export default function Header() {
           </Typography>
           {userProfile ? (
             <Stack
+              mt={{ xs: 1, sm: 0 }}
               direction={"row"}
               spacing={2}
               display={"flex"}
               alignItems={"center"}
+              justifyContent={"space-between"}
+              width={{ xs: "100%", sm: "auto" }}
             >
               <Avatar
                 alt={userProfile.name}

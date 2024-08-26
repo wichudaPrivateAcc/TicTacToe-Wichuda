@@ -1,26 +1,10 @@
-import { createContext, useState } from "react"
-import Alert from "../components/Alert"
-
-interface AlertContextType {
-  handleClose: () => void
-  handleOpen: (obj: Modal) => void
-  modal: Modal
-}
-
-interface Modal {
-  open: boolean
-  title: string
-  message: string
-  isSuccess: boolean
-  isWarning?: boolean
-}
+import { createContext, useContext, useState } from "react"
+import Alert from "../components/common/Alert"
 
 const initModal: Modal = {
   open: false,
   title: "",
-  message: "",
-  isSuccess: false,
-  isWarning: false,
+  isWinner: false,
 }
 
 export const AlertContext = createContext<AlertContextType>({
@@ -34,9 +18,9 @@ export const AlertProvider = ({ children }) => {
 
   const handleOpen = (obj: Modal) => {
     setModal(obj)
-    setTimeout(() => {
-      handleClose()
-    }, 3000)
+    // setTimeout(() => {
+    //   handleClose()
+    // }, 10000)
   }
 
   const handleClose = () => {
@@ -49,4 +33,9 @@ export const AlertProvider = ({ children }) => {
       <Alert />
     </AlertContext.Provider>
   )
+}
+
+export const useAlert = () => {
+  const context = useContext(AlertContext)
+  return context
 }

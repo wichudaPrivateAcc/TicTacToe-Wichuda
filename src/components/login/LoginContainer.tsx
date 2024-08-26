@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material"
-import ImageComponent from "./ImageComponent"
+import ImageComponent from "../common/ImageComponent"
 
 export default function LoginContainer({ children }) {
   return (

@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom"
 import { Button, Typography } from "@mui/material"
 import { gapi } from "gapi-script"
 import GoogleLogin from "react-google-login"
-import { useUser } from "../context/AuthContext"
+import { useUser } from "../../context/AuthContext"
 import GoogleIcon from "@mui/icons-material/Google"
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded"
 import LoginContainer from "./LoginContainer"
-import { addUser } from "../api/users"
-import { setAccessToken, setRefreshToken } from "../utils/tokenHelpers"
+import { addUser } from "../../api/users"
+import { setAccessToken, setRefreshToken } from "../../utils/tokenHelpers"
 
 export default function Login() {
   const { setUserProfile, userProfile } = useUser()

@@ -1,5 +1,9 @@
 import React, { createContext, useState, useContext, useEffect } from "react"
-import { clearAllToken, setUserProfileLocal } from "../utils/tokenHelpers"
+import {
+  clearAllToken,
+  getUserProfile,
+  setUserProfileLocal,
+} from "../utils/tokenHelpers"
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
@@ -7,7 +11,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [userProfile, setUserProfile] = useState<any>(() => {
-    const storedProfile = localStorage.getItem("userProfile")
+    const storedProfile = getUserProfile()
     return storedProfile ? JSON.parse(storedProfile) : null
   })
 
