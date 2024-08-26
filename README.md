@@ -1,50 +1,32 @@
-# React + TypeScript + Vite
+# TicTacToeFrontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+โปรเจคนี้เป็นโปรเจค React + Vite + TypeScript ที่ใช้สำหรับพัฒนาเกม TicTacToe (สำหรับสัมภาษณ์งาน)
 
-Currently, two official plugins are available:
+## คุณสมบัติ (Features)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- / สำหรับหน้าจอเกม
+- /profile สำหรับแสดงข้อมูลของผู้ใช้
+- /login สำหรับหน้าจอการเข้าสู่ระบบ
 
-## Expanding the ESLint configuration
+## การติดตั้ง (Installation)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **Clone โปรเจคนี้จาก GitHub:**
 
-- Configure the top-level `parserOptions` property like this:
+   เปิด terminal หรือ command prompt แล้วรันคำสั่งด้านล่างเพื่อ clone โปรเจคลงในเครื่องของคุณ:
+   
+   git clone https://github.com/wichudaPrivateAcc/TicTacToe-Wichuda.git --> branch master
+   
+3. **ใช้คำสั่ง cd [ชื่อโปรเจค]:**
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+   cd TicTacToe-Wichuda
+   
+5. **ติดตั้ง dependencies ต่างๆ โดยใช้คำสั่ง:**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+   npm install
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+6. **ใช้คำสั่งเพื่อรันโปรแกรม:**
+
+   npm run dev
+
+   
