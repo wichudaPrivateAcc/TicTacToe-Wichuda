@@ -4,6 +4,7 @@ import Login from "../login/Login"
 import Profile from "../Profile"
 import Game from "../game/Game"
 import ProtectedRoute from "../ProtectedRoute"
+import PageNotFound from "../PageNotFound"
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -31,6 +32,10 @@ export default function Router() {
               <Profile />
             </ProtectedRoute>
           ),
+        },
+        {
+          path: "*",
+          element: <PageNotFound />,
         },
       ],
     },
